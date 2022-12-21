@@ -1,7 +1,15 @@
 server:
   port: 8088
 
-# ????? ? Run ?? ?????(Postman ?? ?? ?? ?)
+#아래 DEBUG 관련 설정을 입력해주면, 'Run'창에서 로깅, 디버깅 할 수 있음. 필수적임.
 logging:
   level:
     org.springframework: DEBUG
+
+spring:
+  message:
+    basename: messages #우리가 사용할 메시지 파일(다국어 파일)의 이름을 'messages'라고 저장하는 것
+                       #'리소스 폴더'-->'messages.properties'를 만들어준다. 여기서 'messages'는 바로 여기 'yml 파일'에서 작성한
+                       #'basename: messages'의 'messages'와 동일하게 해줘야 함!
+
+
