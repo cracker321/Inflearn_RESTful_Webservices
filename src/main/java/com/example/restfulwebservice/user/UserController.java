@@ -4,6 +4,11 @@ package com.example.restfulwebservice.user;
 //- 자바에서 db와 관련된 어플리케이션을 개발하기 위해 사용하는 API
 //- '자바의 객체'와 'db의 엔티티'를 매핑하기 위한 프레임워크를 제공해줌
 
+//< HTTP 헤더 >
+//- HTTP 전송에 필요한 모든 부가 정보
+//  e.g) 메시지 바디의 내용, 메시지 바디의 크기, 압축, 인증, 요청 클라이언트, 서버 정보, 캐시 관리 정보 등..
+//- 형식
+//  e.g) Host: www.google.com
 
 
 import lombok.RequiredArgsConstructor;
@@ -46,23 +51,23 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user){ //- @RequestBody : 사용자가 작성하여 보낸 'JSON 객체에 담겨진 내용'이 넘어올 때
-                                                     //이를 받기 위해 여기에 컨트롤러에 작성함. 전달받고자 하는 이 데이터가
-                                                     //'RequestBody 형식'의 역할을 하겠다고 선언하는 것.
-                                                     //'RequestBody'로 'user 엔티티'를 건네줬다는 것은, 클라이언트가 서버로
-                                                     //'user 엔티티 객체' 내부의 필드들 'name'과 'joinDate'를 JSON으로
-                                                     //건네줬다는 것임. 즉, postman에 입력되는 json 정보는 예를 들어 아래와 같음.
-                                                     //{
-                                                     //    "name": "Yujong",
-                                                     //    "joinDate": "2020-03-26T10:25:17.407+0000"
-                                                     //}
-                                                     //'유효성 체크를 위한 Validation API 사용'강 03:10~
-                                                     //- @Valid:
-                                                     //
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user){
+                                        //- @RequestBody : 사용자가 작성하여 보낸 'JSON 객체에 담겨진 내용'이 넘어올 때
+                                        //이를 받기 위해 여기에 컨트롤러에 작성함. 전달받고자 하는 이 데이터가
+                                        //'RequestBody 형식'의 역할을 하겠다고 선언하는 것.
+                                        //'RequestBody'로 'user 엔티티'를 건네줬다는 것은, 클라이언트가 서버로
+                                        //'user 엔티티 객체' 내부의 필드들 'name'과 'joinDate'를 JSON으로
+                                        //건네줬다는 것임. 즉, postman에 입력되는 json 정보는 예를 들어 아래와 같음.
+                                        //{
+                                        //    "name": "Yujong",
+                                        //    "joinDate": "2020-03-26T10:25:17.407+0000"
+                                        //}
+                                        //'유효성 체크를 위한 Validation API 사용'강 03:10~
+                                        //- @Valid:
 
         User savedUser = userService.save(user);
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest() //'[Http Status Code 제어]강 3:00~'
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest() //'Http Status Code 제어'강 3:00~'
                                                                         //'새로운 URI'를 생성하는 과정임.                .path("/{id}")
                 .buildAndExpand(savedUser.getId())
                 .toUri();

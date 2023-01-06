@@ -3,7 +3,6 @@ package com.example.restfulwebservice.helloworld;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
 @Data //@Getter, @Setter, @ToString, @EqualsAndHashCode, @RequiredArgsConstructor 다 포함되어있음.
       //@RequiredArgsConstructor와 @AllArgsConstructor와 @NoArgsConstructor 차이점 확인하기!
 @AllArgsConstructor //'현재 클래스 안에 선언된 모든 필드들을 매개변수로 사용한 생성자'를 만들어주는 롬복

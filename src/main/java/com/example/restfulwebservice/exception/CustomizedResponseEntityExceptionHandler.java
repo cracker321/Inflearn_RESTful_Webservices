@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.Date;
 
-//Spring의 AOP를 이용한 Exception Handling강 03:50~
+//'Spring의 AOP를 이용한 Exception Handling'강 03:50~
 @ControllerAdvice //서버 실행되어, 그 과정으로 '모든 컨트롤러들'이 차례차례 실행될 때, 이 '@ControllerAdvice'를 달고 있는 빈(객체)이 실행됨
                   //만약, 서버 실행 과정에서 에러가 발생한다면, 여기 이 클래스에서 등록시킨 '에러 메소드'가 바로 실행됨
 @RestController
@@ -30,7 +30,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
                                        //- 어떠한 컨트롤러가 서버 실행될 때 실행된다 하더라도, '현재 클래스'가 실행될 것이고,
                                        //현재 클래스 안에서 예외가 발생하게 된다면, 아래 '메소드 handleAllExcetpions'가 실행되는 로직.
     public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request){
-        //Spring의 AOP를 이용한 Exception Handling강 05:00~
+        //'Spring의 AOP를 이용한 Exception Handling'강 05:00~
         //'모든 예외'를 처리해주기 위해 내가 임의로 생성한 메소드 handleAllExceptions.
         //'ResponseEntity<Object>': '사용자 객체'를 한 명씩 추가시켰을 때 리턴했던 형태의 리턴값.
         //'내장 클래스 Exception':

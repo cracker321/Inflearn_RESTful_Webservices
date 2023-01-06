@@ -16,10 +16,12 @@ package com.example.restfulwebservice.user;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.NOT_FOUND) //HTTP Status Code 제어를 위한 Exception Handling강 09:10~
+
+
+@ResponseStatus(HttpStatus.NOT_FOUND) //'HTTP Status Code 제어를 위한 Exception Handling'강 09:10~
                                       //이렇게 선언하면, 앞으로 이 예외 클래스는 '5XX 에러가 아니라, 400 또는 404 에러'로
-                                      //클라이언트에게 전달됨됨public class UserNotFoundException extends RuntimeException { //이 예외는 'throw'를 던지지 않고,
-                                      // 'ReuntimeException'을 발생시키도록 함.
+                                      //클라이언트에게 전달됨.
+                                      //이 예외는 'throw'를 던지지 않고, 'RuntimeException'을 발생시키도록 함.
 public class UserNotFoundException extends RuntimeException{
     public UserNotFoundException(String message) {
         super(message); //생성자는, 부모클래스로부터 전달받은 '변수 message'를 사용함

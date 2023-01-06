@@ -8,7 +8,8 @@ import lombok.Data;
 
 import java.util.Date;
 
-@Data
+@Data//@Getter, @Setter, @ToString, @EqualsAndHashCode, @RequiredArgsConstructor 다 포함되어있음.
+     //@RequiredArgsConstructor와 @AllArgsConstructor와 @NoArgsConstructor 차이점 확인하기!
 @AllArgsConstructor
 public class User {
 
