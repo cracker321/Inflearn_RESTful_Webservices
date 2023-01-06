@@ -64,12 +64,12 @@ public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일
 //=====================================================================================================================
 
 
-    //1. '컨트롤러의 메소드 버전 관리법 1'
+    //1. '컨트롤러의 메소드 버전 관리법 1': 'URI Versioning'. 일반 브라우저에서 실행 가능
     //< 'URI를 이용한 REST API Version 관리'강 03:00~ >
     //@GetMapping("v1/users/{id}")  //버전 차이를 이렇게 나타낼 수도 있고,
 
 
-    //2. '컨트롤러의 메소드 버전 관리법 2'
+    //2. '컨트롤러의 메소드 버전 관리법 2': 'Request Parameter Versioning'. 일반 브라우저에서 실행 가능
     //< 'Request Parameter와 Header를 이용한 API Version 관리'강 00:00~ > //버전 차이를 이렇게도 나타낼 수 있고,
     //@GetMapping(value = "/users/{id}/", params = "version=1") //- '@GetMappiing()'의 '()' 안에 지금 여기처럼 두 가지 이상의
                                                                    //  정보가 들어온다면, 'URL 경로(path)' 앞에 여기처럼
@@ -80,12 +80,23 @@ public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일
                                                                    //  이라 쓰고,
                                                                    //  기본으로 'Params 탭'을 선택해두어야 한다
 
-    //3. '컨트롤러의 메소드 버전 관리법 3'
+
+    //3. '컨트롤러의 메소드 버전 관리법 3': 'Request Header Versioning'. 일반 브라우저에서 실행 불가능
     //< 'Request Parameter와 Header를 이용한 API Version 관리'강 03:20~ > //버전 차이를 이렇게도 나타낼 수 있다.
-    @GetMapping(value = "/users/{id}", headers="X-API-VERSION=1" ) //단, 이 방법은 '포스트맨'에서 경로에는
-                                                                      //'http://localhost:8088/admin/users/1'라고만 쓰고
-                                                                      //'Headers 탭'에서 'KEY' 에 'X-API-VERSION'을 넣고
-                                                                      //'VALUE'에는 '1'을 넣어야 한다!
+    //@GetMapping(value = "/users/{id}", headers = "X-API-VERSION=1" ) //단, 이 방법은 '포스트맨'에서 경로에는
+                                                                       //'http://localhost:8088/admin/users/1'라고만 쓰고
+                                                                       //'Headers 탭'에서 'KEY' 에 'X-API-VERSION'을 넣고
+                                                                       //'VALUE'에는 '1'을 넣어야 한다!
+
+
+    //4. '컨트롤러의 메소드 버전 관리법 4': 'Media-type Versioning'. : 일반 브라우저에서 실행 불가능
+    //< 'Request Parameter와 Header를 이용한 API Version 관리'강 06:00~ > //버전 차이를 이렇게도 나타낼 수 있다.
+    @GetMapping(value = "/users/{id}", produces = "application/vnd.company.appv1+json" ) //단, 이 방법은 '포스트맨' 경로에
+                                                                    //'http://localhost:8088/admin/users/1'라고만 쓰고
+                                                                    // 'Headers 탭' 누르고,
+                                                                    //거기에서 'KEY'에 'Accept'를 넣고
+                                                                    //'VALUE'에는 'application/vnd.company.appv1+json'을
+                                                                    //넣는다!
     public MappingJacksonValue retrieveUserV1(@PathVariable int id){ //- '개별 사용자'를 조회함
                                                     //- '관리자'이기에 프론트로부터 넘어오는 'User 엔티티 조회 요청'에 대해
                                                     //
@@ -125,14 +136,15 @@ public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일
 
 //=====================================================================================================================
 
+
     //GET /admin/users/1 --> /admin/v2/users/1
 
-    //1. '컨트롤러의 메소드 버전 관리법 1'
+    //1. '컨트롤러의 메소드 버전 관리법 1': 'URI Versioning'. 일반 브라우저에서 실행 가능
     //< 'URI를 이용한 REST API Version 관리'강 03:00~ >
     //@GetMapping("v2/users/{id}")  //버전 차이를 이렇게 나타낼 수도 있고,
 
 
-    //2. '컨트롤러의 메소드 버전 관리법 2'
+    //2. '컨트롤러의 메소드 버전 관리법 2': 'Request Parameter Versioning'. 일반 브라우저에서 실행 가능
     //< 'Request Parameter와 Header를 이용한 API Version 관리'강 00:00~ > //버전 차이를 이렇게도 나타낼 수 있고,
     //@GetMapping(value = "/users/{id}/", params = "version=2") //- '@GetMappiing()'의 '()' 안에 지금 여기처럼 두 가지 이상의
                                                                     //  정보가 들어온다면, 'URL 경로(path)' 앞에 여기처럼
@@ -143,14 +155,22 @@ public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일
                                                                     //  이라 쓰고(여기서 '?'는, 뒤에 'param'이 오기 떄문에 넣음)
                                                                     //  기본으로 'Params 탭'을 선택해두어야 한다.
 
-    //3. '컨트롤러의 메소드 버전 관리법 3'
+    //3. '컨트롤러의 메소드 버전 관리법 3': 'Request Header Versioning'. 일반 브라우저에서 실행 불가능
     //< 'Request Parameter와 Header를 이용한 API Version 관리'강 03:20~ > //버전 차이를 이렇게도 나타낼 수 있다.
-                                                                       //단, 이 방법은 '포스트맨'에서 경로에는
+    //@GetMapping(value = "/users/{id}", headers = "X-API-VERSION=2" ) //단, 이 방법은 '포스트맨'에서 경로에는
                                                                        //'http://localhost:8088/admin/users/1'라고만 쓰고
-                                                                       //'Headers 탭'누르고,
+                                                                       //'Headers 탭' 누르고,
                                                                        // 거기에서 'KEY' 에 'X-API-VERSION'을 넣고
                                                                        //'VALUE'에는 '2'을 넣어야 한다!
-    @GetMapping(value = "/users/{id}", headers="X-API-VERSION=2" )
+
+    //4. '컨트롤러의 메소드 버전 관리법 4': 'Media-type Versioning'. : 일반 브라우저에서 실행 불가능
+    //< 'Request Parameter와 Header를 이용한 API Version 관리'강 06:00~ > //버전 차이를 이렇게도 나타낼 수 있다.
+    @GetMapping(value = "/users/{id}", produces = "application/vnd.company.appv2+json" ) //단, 이 방법은 '포스트맨' 경로에
+                                                                    //'http://localhost:8088/admin/users/1'라고만 쓰고
+                                                                    //'Headers 탭' 누르고,
+                                                                    //거기에서 'KEY'에 'Accept'를 넣고
+                                                                    //'VALUE'에는 'application/vnd.company.appv2+json'을
+                                                                    //넣는다!
     public MappingJacksonValue retrieveUserV2(@PathVariable int id){ //- '개별 사용자'를 조회함
         //- '관리자'이기에 프론트로부터 넘어오는 'User 엔티티 조회 요청'에 대해
         //
@@ -175,7 +195,10 @@ public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일
                                                 //                                   인스턴스 복사 가능하게 해주는 등(바로 여기서)
 
         //- 'UserV2 객체' 내부에는 'User 객체의 필드(데이터)'를 다 포함하고, 여기에 더해 '필드 grade'도 있음.
-        userV2.setGrade("VIP"); //임시로 'VIP'를 '필드 grade'에 저장해둠.
+        userV2.setGrade("VIP"); //임시로 'VIP'를 '필드 grade'에 저장해둠. 즉, 클라이언트에게 응답 바디 보낼 때, JSON 객체에서
+                                //  { ...
+                                //  "grade" : "VIP"
+                                //  ... }     이렇게 클라이언트로 전달해줌.
 
 
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter
