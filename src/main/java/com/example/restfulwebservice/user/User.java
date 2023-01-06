@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -26,6 +27,10 @@ import java.util.Date;
                         //- "UserInfo": 필터 이름.
                         // '컨트롤러' 또는 'service'에서 '어떤 bean'을 대상으로 사용될 필터인지' 그 필터 이름임.
                         //  여기서는 'AdminUser 객체의 메소드 retrieveUser'에서 사용했음. 해당 부분 확인하기.
+@NoArgsConstructor //'UserV2 객체'가 'User 객체'로부터 상속받으려면, 'UserV2 객체'가 만들어질 때 '부모 객체인 User의 객체'를 
+                   //참고해서 만들어지는데, 그러하기 위해서는 'User 객체와 UserV2 객체 각각의 내부에 기본 생성자가 반드시 존재'해야만 한다!
+                   //따라서, '@NoArgsConstructor'를 통해 '디폴트 생성자'를 생성해준다!
+                   //아니면, 'User 객체' 내부에 '디폴트 생성자' 로직 직접 작성해줘도 됨. 'public User () {}'.
 public class User {
 
 
@@ -37,7 +42,7 @@ public class User {
 
 
 
-    //'Response 데이터 제어를 위한 Filtering'강 05:30~
+    //< 'Response 데이터 제어를 위한 Filtering'강 05:30~ >
     //외부에 노출시키고 싶지 않은 데이터인 'password'와 'ssn(주민번호 같은 것)'
     //'@JsonIgnore'를 추가시켜줌으로써,
     //JSON 통신을 통해서 프론트로부터 전달받은 데이터들 중에서, 보안 상 컨트롤러로 보내고 싶지 않은 데이터를,

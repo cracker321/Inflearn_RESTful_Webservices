@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
@@ -64,8 +65,10 @@ public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일
 
 
 
-    @GetMapping("/users/{id}")
-    public MappingJacksonValue retrieveUser(@PathVariable int id){ //- '개별 사용자'를 조회함
+    // < 'URI를 이용한 REST API Version 관리'강 03:00~ >
+    //GET /admin/users/1 --> /admin/v1/users/1
+    @GetMapping("v1/users/{id}")
+    public MappingJacksonValue retrieveUserV1(@PathVariable int id){ //- '개별 사용자'를 조회함
                                                     //- '관리자'이기에 프론트로부터 넘어오는 'User 엔티티 조회 요청'에 대해
                                                     //
 
@@ -100,6 +103,52 @@ public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일
 
         return mapping;
     }
+
+
+
+
+
+
+
+
+    //GET /admin/users/1 --> /admin/v1/users/1
+    @GetMapping("v2/users/{id}")
+    public MappingJacksonValue retrieveUserV2(@PathVariable int id){ //- '개별 사용자'를 조회함
+        //- '관리자'이기에 프론트로부터 넘어오는 'User 엔티티 조회 요청'에 대해
+        //
+
+        User user = userService.findOne(id);
+
+        if(user == null){
+            throw new UserNotFoundException(String.format("ID[%s} not found", id));
+        }
+
+        //< 'URI를 이용한 REST API Version 관리'강 06:50~ >
+        //- '글자 User' --> '글자 UserV2' 로 빠르게 바꾸는 방법
+        UserV2 userV2 = new UserV2(); //'클참뉴클': 'UserV2 클래스'를 'UserV2 객체'로 만듦
+        BeanUtils.copyProperties(user, userV2); //- 'JVM 내장 클래스 BeanUtils': '객체(Bean)들' 간의 관련되어 있는 여러 작업들을
+                                                //                              할 수 있도록 도와주는 클래스.
+                                                //                              e.g) 인스턴스 생성,
+                                                //                                   두 인스턴스 간 공통 필드 있는 경우에는
+                                                //                                   인스턴스 복사 가능하게 해주는 등(바로 여기서)
+
+        //- 'UserV2 객체' 내부에는 'User 객체의 필드(데이터)'를 다 포함하고, 여기에 더해 '필드 grade'도 있음.
+        userV2.setGrade("VIP"); //임시로 'VIP'를 '필드 grade'에 저장해둠.
+
+
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter
+                .filterOutAllExcept("id", "name", "joinDate", "ssn");
+
+        FilterProvider filters = new SimpleFilterProvider().addFilter("UserInfoV2", filter);
+
+        MappingJacksonValue mapping = new MappingJacksonValue(userV2);
+        mapping.setFilters(filters);
+
+
+        return mapping;
+    }
+
+
 
 
     

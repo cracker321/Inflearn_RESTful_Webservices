@@ -33,7 +33,7 @@ public class HelloWorldController {
     }
 
 
-    //'다국어 처리를 위한 Internationalization 구현 방법'강 05:35~
+    //< '다국어 처리를 위한 Internationalization 구현 방법'강 05:35~ >
     @GetMapping(path = "/hello-world-internationalized")
     public String helloWorldInternationalized(@RequestHeader(name="Accept-Language", required=false) Locale locale){
                                 //- 'Locale 값'은 원래 '@RequestHeader'에 의해 전달되기 때문에, '@RequestHeader'를 붙여줌.
