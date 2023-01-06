@@ -21,9 +21,10 @@ public class UserService {
     private static int usersCount = 3; //'최초 초기 사용자'는 3명으로 잡음(?)
 
     static{
-        users.add(new User(1, "Kenneth", new Date()));
-        users.add(new User(2, "Alice", new Date()));
-        users.add(new User(3, "Elena", new Date()));
+        //'User 객체 속 모든 필드들'에 해당하는 값들을 아래에 차례차례 넣어줘야 한다! 안그러면 에러난다!
+        users.add(new User(1, "Kenneth", new Date(), "pass1", "701010-1111111"));
+        users.add(new User(2, "Alice", new Date(), "pass2", "801010-2222222"));
+        users.add(new User(3, "Elena", new Date(), "pass3", "901010-1111111"));
     }
 
     //< 전체 사용자 조회 >
