@@ -35,12 +35,17 @@ public class UserController {
     @GetMapping("/users")
     public List<User> retrieveAllUsers(){
 
+        //return userService.findAll(); //이거를 'ctrl + alt + v' 또는 '마우스 우클릭 -> Refactor -> Introduce Variable' 누르면
+                                        //쪼개서 코드 작성할 수 있음. 즉, 바로 아래처럼 할 수 있음.
+                                        //List<User> users = userService.findAll();
+                                        //return users;
+                                        //이렇게 써 줄 수 있다!
         return userService.findAll();
     }
 
 
     @GetMapping("/users/{id}")
-    public User retrieveUser(@PathVariable int id){
+    public User retrieveUser(@PathVariable int id){ //'개별 사용자'를 조회
 
         User user = userService.findOne(id);
 
