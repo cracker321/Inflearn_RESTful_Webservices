@@ -31,6 +31,8 @@ public class UserController {
         this.userService = userService;
     }
 
+//=====================================================================================================================
+
 
     @GetMapping("/users")
     public List<User> retrieveAllUsers(){
@@ -44,6 +46,9 @@ public class UserController {
     }
 
 
+//=====================================================================================================================
+
+
     @GetMapping("/users/{id}")
     public User retrieveUser(@PathVariable int id){ //'개별 사용자'를 조회
 
@@ -54,6 +59,10 @@ public class UserController {
         }
         return userService.findOne(id);
     }
+
+
+//=====================================================================================================================
+
 
     @PostMapping("/users")
     public ResponseEntity<User> createUser(@Valid @RequestBody User user){
@@ -81,6 +90,10 @@ public class UserController {
 
     }
 
+
+//=====================================================================================================================
+
+
     @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable int id){
 
@@ -92,4 +105,8 @@ public class UserController {
 
         }
     }
+
+
+//=====================================================================================================================
+
 }

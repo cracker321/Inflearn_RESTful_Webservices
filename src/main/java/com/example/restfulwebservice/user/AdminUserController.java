@@ -61,13 +61,23 @@ public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일
     }
 
 
+//=====================================================================================================================
 
 
-
-
-    // < 'URI를 이용한 REST API Version 관리'강 03:00~ >
+    //1. '컨트롤러의 메소드 버전 관리법 1'
+    //< 'URI를 이용한 REST API Version 관리'강 03:00~ >
     //GET /admin/users/1 --> /admin/v1/users/1
-    @GetMapping("v1/users/{id}")
+
+    //@GetMapping("v1/users/{id}")  //버전 차이를 이렇게 나타낼 수도 있고,
+
+    //2. '컨트롤러의 메소드 버전 관리법 2'
+    //< 'Request Parameter와 Header를 이용한 API Version 관리'강 00:00~ > //버전 차이를 이렇게 나타낼 수도 있다
+    @GetMapping(value = "/users/{id}/", params = "version=1") //- '@GetMappiing()'의 '()' 안에 지금 여기처럼 두 가지 이상의
+                                                                 //  정보가 들어온다면, 'URL 경로(path)' 앞에 여기처럼
+                                                                 //  'value'를 붙여줘야 한다!!
+                                                                 //  또한, 경로 끝에 반드시 '/'를 또 붙여줘야 한다!
+
+
     public MappingJacksonValue retrieveUserV1(@PathVariable int id){ //- '개별 사용자'를 조회함
                                                     //- '관리자'이기에 프론트로부터 넘어오는 'User 엔티티 조회 요청'에 대해
                                                     //
@@ -79,7 +89,7 @@ public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일
         }
 
 
-        //'프로그래밍으로 제어하는 Filtering 방법 - 개별 사용자 조회'강 05:00~
+        //< '프로그래밍으로 제어하는 Filtering 방법 - 개별 사용자 조회'강 05:00~ >
         //- 클라이언트로부터 포스트맨 통해서 JSON 데이터(여기서는 'User 객체' 데이터) 요청 들어올 때,
         //  'User 객체에서 선언('@JsonFilter')한 필터'인 "필터명 UserInfo'를 여기서 적어주고,
         //  아래의 '필터링 속성(필드 id, name, joinDate, ssn)'에 작성해준 필드들만 DB에서 가져와서
@@ -105,14 +115,21 @@ public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일
     }
 
 
+//=====================================================================================================================
 
 
-
-
-
-
+    //1. '컨트롤러의 메소드 버전 관리법 1'
+    // < 'URI를 이용한 REST API Version 관리'강 03:00~ >
     //GET /admin/users/1 --> /admin/v1/users/1
-    @GetMapping("v2/users/{id}")
+
+    //@GetMapping("v2/users/{id}")  //버전 차이를 이렇게 나타낼 수도 있고,
+
+    //2. '컨트롤러의 메소드 버전 관리법 2'
+    //< 'Request Parameter와 Header를 이용한 API Version 관리'강 00:00~ > //버전 차이를 이렇게 나타낼 수도 있다
+    @GetMapping(value = "/v2/users/{id}/", params = "version=2") //- '@GetMappiing()'의 '()' 안에 지금 여기처럼 두 가지 이상의
+                                                                    //  정보가 들어온다면, 'URL 경로(path)' 앞에 여기처럼
+                                                                    //  'value'를 붙여줘야 한다!!
+                                                                    //  또한, 경로 끝에 반드시 '/'를 또 붙여줘야 한다!
     public MappingJacksonValue retrieveUserV2(@PathVariable int id){ //- '개별 사용자'를 조회함
         //- '관리자'이기에 프론트로부터 넘어오는 'User 엔티티 조회 요청'에 대해
         //
@@ -124,7 +141,11 @@ public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일
         }
 
         //< 'URI를 이용한 REST API Version 관리'강 06:50~ >
-        //- '글자 User' --> '글자 UserV2' 로 빠르게 바꾸는 방법
+        //- '글자 User' --> '글자 UserV2' 로 빠르게 바꾸는 방법. '글자'만 바꾸는 것이 아니라 여기서는 'UserV2 객체'가 필요하기에,
+        //  'User 객체'를 'UsreV2 객체'로 빠르게 바꾸는 방법임.
+
+        //- 바로 위에서 'User user = userService.findOne(id)'를 통해, DB에 접근하여 'User 객체'의 정보를 먼저 조회해서 가져왔고,
+        //  그 다음 아래 과정을 통해, 'User 객체의 내부 데이터'를 'User2 객체의 내부'에 '복사(옮기기)'하는 것임.
         UserV2 userV2 = new UserV2(); //'클참뉴클': 'UserV2 클래스'를 'UserV2 객체'로 만듦
         BeanUtils.copyProperties(user, userV2); //- 'JVM 내장 클래스 BeanUtils': '객체(Bean)들' 간의 관련되어 있는 여러 작업들을
                                                 //                              할 수 있도록 도와주는 클래스.
@@ -149,8 +170,7 @@ public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일
     }
 
 
+//=====================================================================================================================
 
-
-    
 
 }
