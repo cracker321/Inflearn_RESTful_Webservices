@@ -66,18 +66,26 @@ public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일
 
     //1. '컨트롤러의 메소드 버전 관리법 1'
     //< 'URI를 이용한 REST API Version 관리'강 03:00~ >
-    //GET /admin/users/1 --> /admin/v1/users/1
-
     //@GetMapping("v1/users/{id}")  //버전 차이를 이렇게 나타낼 수도 있고,
 
+
     //2. '컨트롤러의 메소드 버전 관리법 2'
-    //< 'Request Parameter와 Header를 이용한 API Version 관리'강 00:00~ > //버전 차이를 이렇게 나타낼 수도 있다
-    @GetMapping(value = "/users/{id}/", params = "version=1") //- '@GetMappiing()'의 '()' 안에 지금 여기처럼 두 가지 이상의
-                                                                 //  정보가 들어온다면, 'URL 경로(path)' 앞에 여기처럼
-                                                                 //  'value'를 붙여줘야 한다!!
-                                                                 //  또한, 경로 끝에 반드시 '/'를 또 붙여줘야 한다!
+    //< 'Request Parameter와 Header를 이용한 API Version 관리'강 00:00~ > //버전 차이를 이렇게도 나타낼 수 있고,
+    //@GetMapping(value = "/users/{id}/", params = "version=1") //- '@GetMappiing()'의 '()' 안에 지금 여기처럼 두 가지 이상의
+                                                                   //  정보가 들어온다면, 'URL 경로(path)' 앞에 여기처럼
+                                                                   //  'value ='를 붙여줘야 한다!!
+                                                                   //  또한, 경로 끝에 반드시 '/'를 또 붙여줘야 한다!
+                                                                   //- 이 방법은 '포스트맨'에서 경로에는
+                                                                   //  'http://localhost:8088/admin/users/1?version=1'
+                                                                   //  이라 쓰고,
+                                                                   //  기본으로 'Params 탭'을 선택해두어야 한다
 
-
+    //3. '컨트롤러의 메소드 버전 관리법 3'
+    //< 'Request Parameter와 Header를 이용한 API Version 관리'강 03:20~ > //버전 차이를 이렇게도 나타낼 수 있다.
+    @GetMapping(value = "/users/{id}", headers="X-API-VERSION=1" ) //단, 이 방법은 '포스트맨'에서 경로에는
+                                                                      //'http://localhost:8088/admin/users/1'라고만 쓰고
+                                                                      //'Headers 탭'에서 'KEY' 에 'X-API-VERSION'을 넣고
+                                                                      //'VALUE'에는 '1'을 넣어야 한다!
     public MappingJacksonValue retrieveUserV1(@PathVariable int id){ //- '개별 사용자'를 조회함
                                                     //- '관리자'이기에 프론트로부터 넘어오는 'User 엔티티 조회 요청'에 대해
                                                     //
@@ -117,19 +125,32 @@ public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일
 
 //=====================================================================================================================
 
+    //GET /admin/users/1 --> /admin/v2/users/1
 
     //1. '컨트롤러의 메소드 버전 관리법 1'
-    // < 'URI를 이용한 REST API Version 관리'강 03:00~ >
-    //GET /admin/users/1 --> /admin/v1/users/1
-
+    //< 'URI를 이용한 REST API Version 관리'강 03:00~ >
     //@GetMapping("v2/users/{id}")  //버전 차이를 이렇게 나타낼 수도 있고,
 
+
     //2. '컨트롤러의 메소드 버전 관리법 2'
-    //< 'Request Parameter와 Header를 이용한 API Version 관리'강 00:00~ > //버전 차이를 이렇게 나타낼 수도 있다
-    @GetMapping(value = "/v2/users/{id}/", params = "version=2") //- '@GetMappiing()'의 '()' 안에 지금 여기처럼 두 가지 이상의
+    //< 'Request Parameter와 Header를 이용한 API Version 관리'강 00:00~ > //버전 차이를 이렇게도 나타낼 수 있고,
+    //@GetMapping(value = "/users/{id}/", params = "version=2") //- '@GetMappiing()'의 '()' 안에 지금 여기처럼 두 가지 이상의
                                                                     //  정보가 들어온다면, 'URL 경로(path)' 앞에 여기처럼
-                                                                    //  'value'를 붙여줘야 한다!!
+                                                                    //  'value ='를 붙여줘야 한다!!
                                                                     //  또한, 경로 끝에 반드시 '/'를 또 붙여줘야 한다!
+                                                                    //- 이 방법은 '포스트맨'에서 경로에는
+                                                                    //  'http://localhost:8088/admin/users/1?version=2'
+                                                                    //  이라 쓰고(여기서 '?'는, 뒤에 'param'이 오기 떄문에 넣음)
+                                                                    //  기본으로 'Params 탭'을 선택해두어야 한다.
+
+    //3. '컨트롤러의 메소드 버전 관리법 3'
+    //< 'Request Parameter와 Header를 이용한 API Version 관리'강 03:20~ > //버전 차이를 이렇게도 나타낼 수 있다.
+                                                                       //단, 이 방법은 '포스트맨'에서 경로에는
+                                                                       //'http://localhost:8088/admin/users/1'라고만 쓰고
+                                                                       //'Headers 탭'누르고,
+                                                                       // 거기에서 'KEY' 에 'X-API-VERSION'을 넣고
+                                                                       //'VALUE'에는 '2'을 넣어야 한다!
+    @GetMapping(value = "/users/{id}", headers="X-API-VERSION=2" )
     public MappingJacksonValue retrieveUserV2(@PathVariable int id){ //- '개별 사용자'를 조회함
         //- '관리자'이기에 프론트로부터 넘어오는 'User 엔티티 조회 요청'에 대해
         //
