@@ -23,7 +23,7 @@ import java.util.Date;
                                                    //포스트맨 결과 화면 조회에서 확인할 수 있음
 //그러면, 이제 '클라이언트로부터 User 엔티티 요청'이 넘어올 때, 해당 데이터는 '컨트롤러 UserController'로 넘어가지 않게 된다!
 
-@JsonFilter("UserInfo") //- 여기에 붙게 되는 '필터'은 이제 '컨트롤러'와 'service'에서 사용될 것임.
+//@JsonFilter("UserInfo") //- 여기에 붙게 되는 '필터'은 이제 '컨트롤러'와 'service'에서 사용될 것임.
                         //- "UserInfo": 필터 이름.
                         // '컨트롤러' 또는 'service'에서 '어떤 bean'을 대상으로 사용될 필터인지' 그 필터 이름임.
                         //  여기서는 'AdminUser 객체의 메소드 retrieveUser'에서 사용했음. 해당 부분 확인하기.

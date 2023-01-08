@@ -12,6 +12,8 @@ package com.example.restfulwebservice.user;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -19,6 +21,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RequiredArgsConstructor
@@ -51,7 +56,7 @@ public class UserController {
 
     @GetMapping("/users/{id}") //'개별 사용자'를 조회
     //public User retrieveUser(@PathVariable int id){ //'Hateos 적용 전'
-    public EntityModel<User> retrieveUser(@PathVariable int id){
+    public ResponseEntity<EntityModel<User>> retrieveUser(@PathVariable int id){
 
         User user = userService.findOne(id);
 
@@ -60,15 +65,25 @@ public class UserController {
         }
 
         //< 'Level3 단계의 REST API 구현을 위한 HATEOAS 적용'강 05:00~ >
-        EntityModel<User> model = new EntityModel<>(user); //'매개변수'로 '위에서 DB에 접근하여 검색되어진 user 객체 값'을 넣음
-                                                           //'User user = userService.findOne(id);'
+        EntityModel<User> entityModel = EntityModel.of(user); //'매개변수'로 '위에서 DB에 접근하여 검색되어진 user 객체 값'을 넣음
+                                                           //('User user = userService.findOne(id);')
         WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllUsers());
-        model.add(linkTo.withRel("all-users"));
+                                                    //- 이 user 값을 반환시킬 때, 이 user가 사용할 수 있는 추가적인 정보(링크)를
+                                                    //  하이퍼미디어 타입으로 넣음.
+                                                    //- 'WebMvcLinkBuilder': '어떤 링크'를 추가해줄 것인지 지정하는 것.
+                                                    //                       즉, 여기서는 '전체 사용자 목록 보기'로 돌아가는 것.
+                                                    //                       'retrieveAllUsers()'로 돌아가는 것이기 때문.
+                                                    //- 'this.getClass()).retrieveAllUsers()': 'this.getClass'가 가지고
+                                                    //                  있는 데이터들 중에서, 'retrieveAllUsers()'를 연동함
+        entityModel.add(linkTo.withRel("all-users")); //위에서 생성한 'WebMvcLinkBuilder 객체'에다가 '링크'를 추가시키고,
+                                                      //그것을 'all-users 라는 URI명'과 연동시킴
 
-
+        //즉, '라이브러리 Hateoas'는 '하나의 리소스'에서 '파생되는 여러 추가적 작업들'을 확인해볼 수 있음.
+        //'Hateoas 작업 자체'는 '개발자에게는 추가적인 작업'을 요구하지만, '애플리케이션 사용하는 사용자 입장'에서는 다양한 추가 정보를
+        //한 번에 얻을 수 있다는 장점이 있음.
 
         //return userService.findOne(id); //'Hateos 적용 전'의 리턴문
-        return model; //'Hateos 적용 후'의 리턴문
+        return ResponseEntity.ok(entityModel); //'Hateos 적용 후'의 리턴문
     }
 
 
