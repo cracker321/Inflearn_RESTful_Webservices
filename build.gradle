@@ -33,11 +33,15 @@ dependencies {
 	//testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	//testImplementation 'org.springframework.security:spring-security-test'
 
+    //'jackson 라이브러리'. 아래까지 총 4개 다 포함.
 	implementation "com.fasterxml.jackson.core:jackson-core:2.14.0"
 	implementation "com.fasterxml.jackson.core:jackson-annotations:2.14.0"
 	implementation "com.fasterxml.jackson.core:jackson-databind:2.14.0"
 	implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.14.0"
 
+
+    //'Hateoas 라이브러리'
+	implementation 'org.springframework.boot:spring-boot-starter-hateoas:3.0.1'
 }
 
 tasks.named('test') {
