@@ -2,6 +2,9 @@ server:
   port: 8088
 
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   h2:
     console:
       enabled: true
@@ -23,15 +26,18 @@ spring:
     #'리소스 폴더'-->'messages.properties'를 만들어준다. 여기서 'messages'는 바로 여기 'yml 파일'에서 작성한
     #'basename: messages'의 'messages'와 동일하게 해줘야 함!
 
+
+
+
 logging:
   level:
     org:
-      hibernate:
-        SQL: DEBUG
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
+      springframework: DEBUG
+    hibernate: DEBUG
+
+
+
+
 
 
 

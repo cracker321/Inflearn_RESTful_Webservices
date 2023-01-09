@@ -42,6 +42,11 @@ dependencies {
 
 	//'Hateoas 라이브러리'
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+
+
+	//'Swagger' 의존성
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 }
 
 tasks.named('test') {
