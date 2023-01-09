@@ -3,6 +3,7 @@ package com.example.restfulwebservice.member;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
@@ -12,7 +13,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 
 @Data//@Getter, @Setter, @ToString, @EqualsAndHashCode, @RequiredArgsConstructor 다 포함되어있음.
      //@RequiredArgsConstructor와 @AllArgsConstructor와 @NoArgsConstructor 차이점 확인하기!
@@ -56,9 +60,11 @@ public class Member {
     //< 'Response 데이터 제어를 위한 Filtering'강 05:30~ >
     //외부에 노출시키고 싶지 않은 데이터인 'password'와 'ssn(주민번호 같은 것)'
     //'@JsonIgnore'를 추가시켜줌으로써,
-    //JSON 통신을 통해서 프론트로부터 전달받은 데이터들 중에서, 보안 상 컨트롤러로 보내고 싶지 않은 데이터를,
+    //JSON 통신을 통해서 사용자로부터 전달받은 데이터들 중에서, 보안 상 컨트롤러로 보내고 싶지 않은 데이터를,
     //그에 해당하는 아래 필드 위에 일일이 '@JsonIgnore'를 붙여준다!
-    //그러면, 이제 '프론트로부터 User 엔티티 정보'가 넘어올 때, 아래 두 데이터는 '컨트롤러 UserController'로 넘어가지 않게 된다!
+    //그러면, 이제 '사용자로부터 User 엔티티 정보'가 넘어올 때, 아래 두 데이터는 '컨트롤러 UserController'로 넘어가지 않게 된다!
+    //또한, 따라서, '서버'가 '사용자'에게 응답 리턴값 전달할 때, '@JsonIgnore가 붙은 필드의 데이터'는 '제외되고',
+    //따라서, 포스트맨으로 응답 데이터 확인할 때, 해당 필드 데이터는 사용자에게 리턴값으로 전달되지 않는다!
     //@JsonIgnore
     @ApiModelProperty(notes = "사용자의 비밀번호를 입력해주세요.")
     private String password;
@@ -69,4 +75,35 @@ public class Member {
                         //'@JsonIgnoreProperties' 적고, 괄호 안에 내가 보안 상 가리고 싶은 필드를 넣어줘도 된다!
 
 
+    //< '게시물 관리를 위한 Post Entity 추가와 초기 데이터 생성'강 >
+    //- 'Post 객체(N. 주인 객체) : 'Member 객체(1. 종속 객체)'
+
+    //cf)
+    //N:1 관계 : 말 그대로 N명의 회원이 1개의 팀에 소속될 수 있다는 뜻
+    //단방향 매핑: 회원 객체만이 팀 객체의 내부데이터를 알고 싶어함
+    //양방향 매핑: 회원 객체와 팀 객체 모두 서로의 객체의 네부데이터를 알고 싶어함
+    @OneToMany(mappedBy = "member") //'주인 객체 Post의 필드 member'
+    private List<Post> posts = new ArrayList<Post>(); //'현재 회원'이 '몇 개의 게시글들을 작성했는지'를 확인하기 위한 필드
+
+
+
+    //< '게시물 관리를 위한 Post Entity 추가와 초기 데이터 생성'강 10:00~ > ??????????????. 이거 질문게시판에 질문하기
+    //아래 생성자는 왜 생성해주는지..? '서비스 MemberService'의
+//    static{
+//        //'User 객체 속 모든 필드들'에 해당하는 값들을 아래에 차례차례 넣어줘야 한다! 안그러면 에러난다!
+//        members.add(new Member(1, "Kenneth", new Date(), "pass1", "701010-1111111"));
+//        members.add(new Member(2, "Alice", new Date(), "pass2", "801010-2222222"));
+//        members.add(new Member(3, "Elena", new Date(), "pass3", "901010-1111111"));
+//    }
+    //위 부분 때문에 그러는 것인데,
+    //이미 여기 'Member 객체'에 'AllArgsConstructor'와 'NoArgsConstructor' 다 했는데
+    //왜 또 여기 아래에 이렇게 해줘야 에러가 풀리는건지...
+    public Member(int id, String name, Date joinDate, String password, String ssn) {
+
+        this.id = id;
+        this.name = name;
+        this.joinDate = joinDate;
+        this.password = password;
+        this.ssn = ssn;
+    }
 }
