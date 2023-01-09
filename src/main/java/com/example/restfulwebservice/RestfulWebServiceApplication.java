@@ -27,3 +27,32 @@ public class RestfulWebServiceApplication {
 		return localeResolver;
 	}
 }
+
+
+/*
+# JPA
+  - Java Persistance API
+  - 자바 ORM 기술에 대한 API 표준 명세
+    * ORM: 객체 관계 매핑(Object Relational Mapping)
+  - 자바 어플리케이션에서 관계형 DB를 사용하는 방식을 정의한 인터페이스
+  - EntityManager를 통해 CRUD를 처리
+
+
+# Hibernate
+  - JPA의 구현체. 인터페이스를 직접 구현한 라이브러리
+  - 생산성, 유지보수, 비종속성
+  JPA: 인터페이스
+  Hibernate: JPA의 구현체
+  Spring Data JPA: JPA를 추상화한 Repository 인터페이스를 제공함
+
+# Spring Data JPA
+  - Spring Module
+  - JPA를 추상화한 Repository 인터페이스를 제공함
+
+
+
+
+
+
+
+ */

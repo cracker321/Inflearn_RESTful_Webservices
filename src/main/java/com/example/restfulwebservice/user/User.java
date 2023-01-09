@@ -1,11 +1,16 @@
 package com.example.restfulwebservice.user;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,13 +36,21 @@ import java.util.Date;
                    //참고해서 만들어지는데, 그러하기 위해서는 'User 객체와 UserV2 객체 각각의 내부에 기본 생성자가 반드시 존재'해야만 한다!
                    //따라서, '@NoArgsConstructor'를 통해 '디폴트 생성자'를 생성해준다!
                    //아니면, 'User 객체' 내부에 '디폴트 생성자' 로직 직접 작성해줘도 됨. 'public User () {}'.
+@ApiModel(description = "사용자의 상세 정보를 위한 도메인 객체. All details about the user.") //
+@Entity
 public class User {
 
 
+    @Id
+    @GeneratedValue
     private Integer id;
+
     @Size(min=2, message = "Name은 2글자 이상 입력해 주세요.") //'Postman 통신'할 때 전달되는 해당 JSON 데이터의 입력 조건임
+    @ApiModelProperty(notes = "사용자의 이름을 입력해주세요.")
     private String name;
+
     @Past //현재 등록된 회원이 가입했던 날짜는, '미래'가 아니라 당연히 '과거'이기 때문에, '과거 데이터'만 사용 가능하다는 조건 부여함
+    @ApiModelProperty(notes = "사용자의 등록일을 입력해주세요.")
     private Date joinDate;
 
 
@@ -49,8 +62,11 @@ public class User {
     //그에 해당하는 아래 필드 위에 일일이 '@JsonIgnore'를 붙여준다!
     //그러면, 이제 '프론트로부터 User 엔티티 정보'가 넘어올 때, 아래 두 데이터는 '컨트롤러 UserController'로 넘어가지 않게 된다!
     //@JsonIgnore
+    @ApiModelProperty(notes = "사용자의 비밀번호를 입력해주세요.")
     private String password;
+
     //@JsonIgnore
+    @ApiModelProperty(notes = "사용자의 비밀번호를 입력해주세요.")
     private String ssn; //이렇게 해당 필드에 일일이 '@JsonIgnore'를 붙여줘도 되고, 아니면 아예 저 위에 '클래스 블록'으로 
                         //'@JsonIgnoreProperties' 적고, 괄호 안에 내가 보안 상 가리고 싶은 필드를 넣어줘도 된다!
 
