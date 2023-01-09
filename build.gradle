@@ -47,6 +47,17 @@ dependencies {
 	//'Swagger' 의존성
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+
+
+	//'Actuator' 의존성
+	//- 주소창에 'localhost:8088/actuator' 입력하고 기능 확인하면 됨
+	//- 'localhost:8088/actuator/health': 서버상태가 'up'인 것 확인 가능
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+
+	//'HAL 브라우저' 의존성
+	//- 주소창에 'localhost:8088'만 입력해보면 됨
+	implementation 'org.springframework.data:spring-data-rest-hal-explorer'
 }
 
 tasks.named('test') {
