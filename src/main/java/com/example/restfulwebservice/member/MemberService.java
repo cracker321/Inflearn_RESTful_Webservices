@@ -1,4 +1,4 @@
-package com.example.restfulwebservice.user;
+package com.example.restfulwebservice.member;
 
 
 import org.springframework.stereotype.Service;

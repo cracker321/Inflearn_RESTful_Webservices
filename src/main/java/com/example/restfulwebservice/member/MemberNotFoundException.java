@@ -1,4 +1,4 @@
-package com.example.restfulwebservice.user;
+package com.example.restfulwebservice.member;
 
 
 //< Postman 에러코드 종류 >

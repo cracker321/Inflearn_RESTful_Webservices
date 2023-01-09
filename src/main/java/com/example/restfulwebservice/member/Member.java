@@ -1,9 +1,8 @@
-package com.example.restfulwebservice.user;
+package com.example.restfulwebservice.member;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 

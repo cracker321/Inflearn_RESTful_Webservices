@@ -1,4 +1,4 @@
-package com.example.restfulwebservice.user;
+package com.example.restfulwebservice.member;
 
 //< Hibernate >
 //- 자바에서 db와 관련된 어플리케이션을 개발하기 위해 사용하는 API
@@ -39,7 +39,7 @@ public class MemberController {
 //=====================================================================================================================
 
 
-    @GetMapping("/users")
+    @GetMapping("/members")
     public List<Member> retrieveAllMembers(){
 
         //return userService.findAll(); //이거를 'ctrl + alt + v' 또는 '마우스 우클릭 -> Refactor -> Introduce Variable' 누르면
@@ -54,7 +54,7 @@ public class MemberController {
 //=====================================================================================================================
 
 
-    @GetMapping("/users/{id}") //'개별 사용자'를 조회
+    @GetMapping("/members/{id}") //'개별 사용자'를 조회
     //public User retrieveUser(@PathVariable int id){ //'Hateos 적용 전'
     public ResponseEntity<EntityModel<Member>> retrieveMember(@PathVariable int id){
 
@@ -84,6 +84,19 @@ public class MemberController {
 
         //return userService.findOne(id); //'Hateos 적용 전'의 리턴문
         return ResponseEntity.ok(entityModel); //'Hateos 적용 후'의 리턴문
+
+        //'Hateoas 적용 후' 포스트맨 통신 결괏값
+        //{
+        //  "name": "User1",
+        //  "joinDate": "2020-03-29-29T15:00:00.000+0000",
+        //  "password": "test1111",
+        //  "ssn": "701010-111111",
+        //  "_links": {   //여기서부터 'Hateoas 적용'이다! 즉, JSON 통신에서 '메소드 retrieveAllMembers 링크'를 보여주는 것임!!
+        //      "all-members": {
+        //          "href": "http://localhost:8088/jpa/members
+        //      }
+        //  }
+        //}
     }
 
 
@@ -102,7 +115,7 @@ public class MemberController {
                                         //    "name": "Yujong",
                                         //    "joinDate": "2020-03-26T10:25:17.407+0000"
                                         //}
-                                        //'유효성 체크를 위한 Validation API 사용'강 03:10~
+                                        //< '유효성 체크를 위한 Validation API 사용'강 03:10~ >
                                         //- @Valid:
 
         Member savedMember = memberService.save(member);

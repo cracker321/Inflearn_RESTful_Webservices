@@ -1,4 +1,4 @@
-package com.example.restfulwebservice.user;
+package com.example.restfulwebservice.member;
 
 //< Hibernate >
 //- 자바에서 db와 관련된 어플리케이션을 개발하기 위해 사용하는 API
