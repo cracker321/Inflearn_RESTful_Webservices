@@ -3,6 +3,7 @@ package com.example.restfulwebservice.user;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
@@ -37,6 +38,7 @@ import java.util.Date;
                    //따라서, '@NoArgsConstructor'를 통해 '디폴트 생성자'를 생성해준다!
                    //아니면, 'User 객체' 내부에 '디폴트 생성자' 로직 직접 작성해줘도 됨. 'public User () {}'.
 @ApiModel(description = "사용자의 상세 정보를 위한 도메인 객체. All details about the user.") //
+@Table(name = "USERS") //'h2 DB'에는 '테이블 USERS'로 생성된다!. 'h2 DB'에서는 'User가 예약어'이기 때문에 서로 겹쳐서 오류나는 것임.
 @Entity
 public class User {
 

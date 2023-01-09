@@ -15,6 +15,7 @@ spring:
     hibernate:
       ddl-auto: create
     show-sql: true
+    defer-datasource-initialization: true #각종 DB의 버전 변경사항이 있더라도, 이전 버전 사용했던 것을 업데이트 이후에도 그대로 사용가능하게 하는 것
     properties:
       hibernate:
         format_sql: true
