@@ -22,7 +22,13 @@ import static org.springframework.http.ResponseEntity.ok;
 public class MemberJpaController { //'레펏 MemberRepository'를 전담으로 사용하는 컨트롤러임
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberRepository memberRepository; //'Autowired'를 통한 DI
+
+    private PostRepository postRepository; //'생성자'를 통한 DI
+
+    public MemberJpaController(PostRepository postRepository){
+        this.postRepository = postRepository;
+    }
 
 
 //=====================================================================================================================
@@ -132,13 +138,13 @@ public class MemberJpaController { //'레펏 MemberRepository'를 전담으로 �
                                                          //https://thalals.tistory.com/268
 
     }
-
     //'사용자 추가 후', 클라이언트에게 상태코드를 비롯한 상태값을 전달해주기 위해 ResponseEntity를 사용함.
+
 
 //=====================================================================================================================
 
 
-    //< 하나의 회원이 작성한 모든 게시글들'을 조회 >
+    //< '클라이언트가 전달해온 특정한 하나의 회원 id값이 작성한 모든 게시글들'을 조회 >
     @GetMapping("/members/{id}/posts") //e.g) '/jpa/members/90001/posts': 90001번 회원이 작성한 모든 게시글 조회
     public List<Post> retrieveAllPostsByUser(@PathVariable int id){
 
@@ -155,5 +161,38 @@ public class MemberJpaController { //'레펏 MemberRepository'를 전담으로 �
 
     }
 
+
+//=====================================================================================================================
+
+    //< '클라이언트가 전달해온 특정한 하나의 회원'이 '게시글 하나'를 작성하기 >
+    @PostMapping("/members/{id}/posts") //'id 값 번 째(e.g: 90001번 회원)의 회원'이 '게시글 하나'를 작성하는 로직
+    public ResponseEntity<Post> createPost(@PathVariable int id, @RequestBody Post post){
+                                            //- '@PathVariable': '전달된 URL속의 'id'인 회원 id'
+
+        Optional<Member> member = memberRepository.findById(id); //1. 먼저 '해당 회원의 정보'를 'DB로부터' 가져와야 함
+
+        if(!member.isPresent()){
+            throw new MemberNotFoundException(String.format("ID[%s]가 없습니다!", id));
+        }
+
+        post.setMember(member.get()); //2.
+                                      //- 'Optional 객체의 내장 메소드 get': 'Optional 객체'에 저장된 값을 리턴해줌
+                                      //- 'post.setMember()': '클라이언트로부터 전달받은 Post 객체 속의
+                                      //                      해당 게시글을 작성한 회원의 정보'를 '위 DB로부터 가져온
+                                      //                       회원의 정보'로 바꿔버림
+
+        Post savedPost = postRepository.save(post); //3. 'DB로부터 가져온 해당 회원'이 '클라이언트가 건네준
+                                                    //   'Post 객체'를 작성한 것을 'DB에 저장'시킴.
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedPost.getId())
+                .toUri();
+
+
+        return ResponseEntity.created(location).build();
+
+
+    }
 
 }
