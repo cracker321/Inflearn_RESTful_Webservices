@@ -28,26 +28,26 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RequiredArgsConstructor
 @RestController
-public class UserController {
+public class MemberController {
 
-    private UserService userService;
+    private MemberService memberService;
 
-    public UserController(UserService userService){ //생성자를 통한 의존성주입!
-        this.userService = userService;
+    public MemberController(MemberService memberService){ //생성자를 통한 의존성주입!
+        this.memberService = memberService;
     }
 
 //=====================================================================================================================
 
 
     @GetMapping("/users")
-    public List<User> retrieveAllUsers(){
+    public List<Member> retrieveAllMembers(){
 
         //return userService.findAll(); //이거를 'ctrl + alt + v' 또는 '마우스 우클릭 -> Refactor -> Introduce Variable' 누르면
                                         //쪼개서 코드 작성할 수 있음. 즉, 바로 아래처럼 할 수 있음.
                                         //List<User> users = userService.findAll();
                                         //return users;
                                         //이렇게 써 줄 수 있다!
-        return userService.findAll();
+        return memberService.findAll();
     }
 
 
@@ -56,18 +56,18 @@ public class UserController {
 
     @GetMapping("/users/{id}") //'개별 사용자'를 조회
     //public User retrieveUser(@PathVariable int id){ //'Hateos 적용 전'
-    public ResponseEntity<EntityModel<User>> retrieveUser(@PathVariable int id){
+    public ResponseEntity<EntityModel<Member>> retrieveMember(@PathVariable int id){
 
-        User user = userService.findOne(id);
+        Member member = memberService.findOne(id);
 
-        if(user == null){
-            throw new UserNotFoundException(String.format("ID[%s} not found", id));
+        if(member == null){
+            throw new MemberNotFoundException(String.format("ID[%s} not found", id));
         }
 
         //< 'Level3 단계의 REST API 구현을 위한 HATEOAS 적용'강 05:00~ >
-        EntityModel<User> entityModel = EntityModel.of(user); //'매개변수'로 '위에서 DB에 접근하여 검색되어진 user 객체 값'을 넣음
+        EntityModel<Member> entityModel = EntityModel.of(member); //'매개변수'로 '위에서 DB에 접근하여 검색되어진 user 객체 값'을 넣음
                                                            //('User user = userService.findOne(id);')
-        WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllUsers());
+        WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllMembers());
                                                     //- 이 user 값을 반환시킬 때, 이 user가 사용할 수 있는 추가적인 정보(링크)를
                                                     //  하이퍼미디어 타입으로 넣음.
                                                     //- 'WebMvcLinkBuilder': '어떤 링크'를 추가해줄 것인지 지정하는 것.
@@ -91,7 +91,7 @@ public class UserController {
 
 
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user){
+    public ResponseEntity<Member> createMemeber(@Valid @RequestBody Member member){
                                         //- @RequestBody : 사용자가 작성하여 보낸 'JSON 객체에 담겨진 내용'이 넘어올 때
                                         //이를 받기 위해 여기에 컨트롤러에 작성함. 전달받고자 하는 이 데이터가
                                         //'RequestBody 형식'의 역할을 하겠다고 선언하는 것.
@@ -105,11 +105,11 @@ public class UserController {
                                         //'유효성 체크를 위한 Validation API 사용'강 03:10~
                                         //- @Valid:
 
-        User savedUser = userService.save(user);
+        Member savedMember = memberService.save(member);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest() //'Http Status Code 제어'강 3:00~'
                                                                         //'새로운 URI'를 생성하는 과정임.                .path("/{id}")
-                .buildAndExpand(savedUser.getId())
+                .buildAndExpand(savedMember.getId())
                 .toUri();
 
         return ResponseEntity.created(location).build(); //'created는
@@ -121,12 +121,12 @@ public class UserController {
 
 
     @DeleteMapping("/users/{id}")
-    public void deleteUser(@PathVariable int id){
+    public void deleteMember(@PathVariable int id){
 
-        User user = userService.deleteById(id);
+        Member member = memberService.deleteById(id);
 
-        if(user == null){ //- 'url을 통해 클라이언트가 보낸 '사용자 id''에 해당하는 정보가 db에 존재하지 않는다면,
-            throw new UserNotFoundException(String.format("ID[%s] not found", id)); //'UserNotFoundException 에러'를
+        if(member == null){ //- 'url을 통해 클라이언트가 보낸 '사용자 id''에 해당하는 정보가 db에 존재하지 않는다면,
+            throw new MemberNotFoundException(String.format("ID[%s] not found", id)); //'UserNotFoundException 에러'를
                                                                                     //발생시켜 준다!
 
         }

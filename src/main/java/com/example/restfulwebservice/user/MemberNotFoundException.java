@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
                                       //이렇게 선언하면, 앞으로 이 예외 클래스는 '5XX 에러가 아니라, 400 또는 404 에러'로
                                       //클라이언트에게 전달됨.
                                       //이 예외는 'throw'를 던지지 않고, 'RuntimeException'을 발생시키도록 함.
-public class UserNotFoundException extends RuntimeException{
-    public UserNotFoundException(String message) {
+public class MemberNotFoundException extends RuntimeException{
+    public MemberNotFoundException(String message) {
         super(message); //생성자는, 부모클래스로부터 전달받은 '변수 message'를 사용함
     }
 }

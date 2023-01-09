@@ -5,10 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
-import java.util.Date;
-
 @Data//@Getter, @Setter, @ToString, @EqualsAndHashCode, @RequiredArgsConstructor 다 포함되어있음.
      //@RequiredArgsConstructor와 @AllArgsConstructor와 @NoArgsConstructor 차이점 확인하기!
 @AllArgsConstructor
@@ -28,7 +24,7 @@ import java.util.Date;
                    //참고해서 만들어지는데, 그러하기 위해서는 'User 객체와 UserV2 객체 각각의 내부에 기본 생성자가 반드시 존재'해야만 한다!
                    //따라서, '@NoArgsConstructor'를 통해 '디폴트 생성자'를 생성해준다!
                    //아니면, 'User 객체' 내부에 '디폴트 생성자' 로직 직접 작성해줘도 됨. 'public UserV2 () {}'.
-public class UserV2 extends User{ //'UserV2 객체'는 'User 객체'를 상속받음.
+public class MemberV2 extends Member { //'UserV2 객체'는 'User 객체'를 상속받음.
                                   //즉, 'UserV2 객체'는 그 내부 필드(데이터)로 최소한 일단
                                   //'User 객체의 내부 데이터(필드)'를 포함하고 있는 상태임.
 

@@ -16,33 +16,29 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 
 @RequestMapping("/admin") //아래에서 '공통된 URL'을 여기에 적어줄 수 있음
 @RequiredArgsConstructor
 @RestController
-public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일반 사용자'가 사용하는 기능보다 더 중요한 기능들을 포함하고 있음
+public class AdminMemberController { //'관리자'만을 위한 컨트롤러. '일반 사용자'가 사용하는 기능보다 더 중요한 기능들을 포함하고 있음
 
-    private UserService userService;
+    private MemberService memberService;
 
-    public AdminUserController(UserService userService){ //생성자를 통한 의존성주입!
-        this.userService = userService;
+    public AdminMemberController(MemberService memberService){ //생성자를 통한 의존성주입!
+        this.memberService = memberService;
     }
 
 
     @GetMapping("/users")
-    public MappingJacksonValue retrieveAllUsers(){
+    public MappingJacksonValue retrieveAllMembers(){
 
 
-        List<User> users = userService.findAll();
+        List<Member> members = memberService.findAll();
 
         //============================================================================================================
 
@@ -51,7 +47,7 @@ public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일
 
         FilterProvider filters = new SimpleFilterProvider().addFilter("UserInfo", filter);
 
-        MappingJacksonValue mapping = new MappingJacksonValue(users);
+        MappingJacksonValue mapping = new MappingJacksonValue(members);
 
         mapping.setFilters(filters);
         //============================================================================================================
@@ -97,14 +93,14 @@ public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일
                                                                     //거기에서 'KEY'에 'Accept'를 넣고
                                                                     //'VALUE'에는 'application/vnd.company.appv1+json'을
                                                                     //넣는다!
-    public MappingJacksonValue retrieveUserV1(@PathVariable int id){ //- '개별 사용자'를 조회함
+    public MappingJacksonValue retrieveMemberV1(@PathVariable int id){ //- '개별 사용자'를 조회함
                                                     //- '관리자'이기에 프론트로부터 넘어오는 'User 엔티티 조회 요청'에 대해
                                                     //
 
-        User user = userService.findOne(id);
+        Member member = memberService.findOne(id);
 
-        if(user == null){
-            throw new UserNotFoundException(String.format("ID[%s} not found", id));
+        if(member == null){
+            throw new MemberNotFoundException(String.format("ID[%s} not found", id));
         }
 
 
@@ -126,7 +122,7 @@ public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일
 
         FilterProvider filters = new SimpleFilterProvider().addFilter("UserInfo", filter);
 
-        MappingJacksonValue mapping = new MappingJacksonValue(user);
+        MappingJacksonValue mapping = new MappingJacksonValue(member);
         mapping.setFilters(filters);
 
 
@@ -171,14 +167,14 @@ public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일
                                                                     //거기에서 'KEY'에 'Accept'를 넣고
                                                                     //'VALUE'에는 'application/vnd.company.appv2+json'을
                                                                     //넣는다!
-    public MappingJacksonValue retrieveUserV2(@PathVariable int id){ //- '개별 사용자'를 조회함
+    public MappingJacksonValue retrieveMemberV2(@PathVariable int id){ //- '개별 사용자'를 조회함
         //- '관리자'이기에 프론트로부터 넘어오는 'User 엔티티 조회 요청'에 대해
         //
 
-        User user = userService.findOne(id);
+        Member member = memberService.findOne(id);
 
-        if(user == null){
-            throw new UserNotFoundException(String.format("ID[%s} not found", id));
+        if(member == null){
+            throw new MemberNotFoundException(String.format("ID[%s} not found", id));
         }
 
         //< 'URI를 이용한 REST API Version 관리'강 06:50~ >
@@ -187,8 +183,8 @@ public class AdminUserController { //'관리자'만을 위한 컨트롤러. '일
 
         //- 바로 위에서 'User user = userService.findOne(id)'를 통해, DB에 접근하여 'User 객체'의 정보를 먼저 조회해서 가져왔고,
         //  그 다음 아래 과정을 통해, 'User 객체의 내부 데이터'를 'User2 객체의 내부'에 '복사(옮기기)'하는 것임.
-        UserV2 userV2 = new UserV2(); //'클참뉴클': 'UserV2 클래스'를 'UserV2 객체'로 만듦
-        BeanUtils.copyProperties(user, userV2); //- 'JVM 내장 클래스 BeanUtils': '객체(Bean)들' 간의 관련되어 있는 여러 작업들을
+        MemberV2 userV2 = new MemberV2(); //'클참뉴클': 'UserV2 클래스'를 'UserV2 객체'로 만듦
+        BeanUtils.copyProperties(member, userV2); //- 'JVM 내장 클래스 BeanUtils': '객체(Bean)들' 간의 관련되어 있는 여러 작업들을
                                                 //                              할 수 있도록 도와주는 클래스.
                                                 //                              e.g) 인스턴스 생성,
                                                 //                                   두 인스턴스 간 공통 필드 있는 경우에는

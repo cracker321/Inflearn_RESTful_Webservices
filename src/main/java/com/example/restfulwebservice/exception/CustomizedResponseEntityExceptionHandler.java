@@ -3,12 +3,9 @@ package com.example.restfulwebservice.exception;
 //- 로깅정보, 로그인정보 등 '공통적으로 현재 프로젝트의 개별 컨트롤러에서 각각 항상 실행시켜주어야 하는 비즈니스로직' 등을 AOP에 담음
 //- '예외 처리 핸들러 클래스'도 AOP에 해당되어 공통적으로 처리해줘야 하는 기능임.
 
-import com.example.restfulwebservice.user.UserNotFoundException;
-import org.springframework.http.HttpHeaders;
+import com.example.restfulwebservice.user.MemberNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,8 +51,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
 
     //'URL 요청'에서 들어오는 정보들 중에, 'db에 없는 사용자 정보를 요청'할 때 발생시키는 예외를 만듦
-    @ExceptionHandler(UserNotFoundException.class) //'UserNotFoundException 예외'가 발생하면, 아래 메소드가 실행되게 함.
-    public final ResponseEntity<Object> handleUserNotFoundException(Exception ex, WebRequest request){
+    @ExceptionHandler(MemberNotFoundException.class) //'UserNotFoundException 예외'가 발생하면, 아래 메소드가 실행되게 함.
+    public final ResponseEntity<Object> handleMemberNotFoundException(Exception ex, WebRequest request){
 
         ExceptionResponse exceptionResponse =
                 new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
