@@ -65,6 +65,11 @@ public class MemberController {
         }
 
         //< 'Level3 단계의 REST API 구현을 위한 HATEOAS 적용'강 05:00~ >
+        //- 'Richardson Maturity Model'의 가장 높은 단계(Level 3)의 기능들 중 하나
+        //- 클라이언트에게 '그 다음 작업'으로 어떤 것을 할 수 있는지, 또 그 작업을 하기 위해 다뤄줘야 하는 리소스 URL에는
+        //  어떤 것(어떤 액션)이 있는지 알려준다.
+        //  클라이언트가 서버가 제공하는 서비스를 일일히 찾는 수고를 겪지 않아도 되도록 해주는 기능.
+        //  최소한의 진입점(엔드포인트)만 가지고도, 서버의 다음 URI값을 알 수 있도록 해줌
         EntityModel<Member> entityModel = EntityModel.of(member); //'매개변수'로 '위에서 DB에 접근하여 검색되어진 user 객체 값'을 넣음
                                                            //('User user = userService.findOne(id);')
         WebMvcLinkBuilder linkTo = linkTo(methodOn(this.getClass()).retrieveAllMembers());
